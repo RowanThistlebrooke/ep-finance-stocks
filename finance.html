@@ -1108,9 +1108,9 @@ h1, h2, h3, h4, h5, h6 {
    border and radius; this paints the inside. */
 #vposter{display:none}
 .posterMode main.page{display:none}
-.posterMode #vposter{display:block;position:fixed;inset:0;overflow:hidden;
-  background:linear-gradient(165deg, rgba(16,26,22,.55) 0%, rgba(7,12,10,.40) 100%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+html.posterMode{background:transparent !important}
+.posterMode body{background:transparent !important}
+.posterMode #vposter{display:block;position:fixed;inset:0;overflow:hidden}
 #vposter::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
   background:radial-gradient(ellipse 85% 75% at 58% 38%, rgba(110,231,183,.06), transparent 64%)}
 #vposter::after{content:'';position:absolute;inset:0;z-index:4;pointer-events:none;
@@ -1129,7 +1129,7 @@ h1, h2, h3, h4, h5, h6 {
 @keyframes vpBreathe{0%,100%{opacity:.45;transform:scale(.92)}50%{opacity:.95;transform:scale(1.08)}}
 @media (prefers-reduced-motion: reduce){.vpGlow{animation:none}}
 </style>
-<script>if(!/page/.test(location.hash))document.documentElement.className+=' posterMode'</script>
+<script>if(!/page/.test(location.hash)&&window.self!==window.top)document.documentElement.className+=' posterMode'</script>
 </head>
 <body>
 
