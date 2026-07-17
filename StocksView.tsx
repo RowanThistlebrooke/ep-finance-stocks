@@ -48,10 +48,10 @@ interface MarketItem {
 
 const MARKET_BRIEF: MarketItem[] = [
   { tag: 'bull',  tk: 'UNH',  hl: 'UnitedHealth blows past estimates, hikes earnings outlook', src: 'CNBC',    why: 'Beat + raised guidance, reining in costs, $1.5B into AI', top: true },
-  { tag: 'watch', tk: 'NFLX', hl: 'Netflix reports earnings after the bell today',             src: 'CNBC',    why: 'Ad-tier growth + engagement in focus — live catalyst',    top: true },
-  { tag: 'bull',  tk: 'IWM',  hl: 'Strongest small-cap market in three decades',               src: 'CNBC',    why: 'Russell 2000 up ~20% — best first half since 1991',       top: true },
-  { tag: 'watch', tk: 'SMH',  hl: "TSMC's strong quarter isn't lifting chip stocks",           src: 'CNBC',    why: 'Cramer flags the disconnect — chips lag fundamentals' },
-  { tag: 'watch', tk: 'USO',  hl: 'Iran tells Houthis to close Red Sea gateway if US strikes', src: 'Reuters', why: 'Shipping + oil risk building — watch crude' },
+  { tag: 'watch', tk: 'NFLX', hl: 'Netflix reports earnings after the bell today',             src: 'CNBC',    why: 'Ad-tier growth + engagement in focus, live catalyst',    top: true },
+  { tag: 'bull',  tk: 'IWM',  hl: 'Strongest small-cap market in three decades',               src: 'CNBC',    why: 'Russell 2000 up ~20%, best first half since 1991',       top: true },
+  { tag: 'watch', tk: 'SMH',  hl: "TSMC's strong quarter isn't lifting chip stocks",           src: 'CNBC',    why: 'Cramer flags the disconnect, chips lag fundamentals' },
+  { tag: 'watch', tk: 'USO',  hl: 'Iran tells Houthis to close Red Sea gateway if US strikes', src: 'Reuters', why: 'Shipping + oil risk building, watch crude' },
   { tag: 'bear',  tk: 'JETS', hl: 'Iran war leaves European airlines facing a shakeout',       src: 'Reuters', why: 'Conflict + fuel-cost risk pressures the sector' },
 ]
 
@@ -199,7 +199,7 @@ function Holdings({ state, actions, fmt, quotes, refreshQuotes }: Props) {
           <div className={styles.emptyTitle}>No holdings yet.</div>
           <div className={styles.emptyBody}>
             Add a ticker and how many shares you hold. Live prices pull in on their own once your
-            Finnhub key is set — the value keeps itself up to date.
+            Finnhub key is set, and the value keeps itself up to date.
           </div>
         </div>
       ) : (

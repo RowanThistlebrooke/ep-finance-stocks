@@ -85,9 +85,9 @@
 }
 
 .mbPillBear {
-  background: rgba(239, 68, 68, 0.10);
-  border-color: rgba(239, 68, 68, 0.24);
-  color: var(--red);
+  background: rgba(217, 119, 6, 0.12);
+  border-color: rgba(217, 119, 6, 0.30);
+  color: var(--amber-warm, #d97706);
 }
 
 .mbPillWatch {
