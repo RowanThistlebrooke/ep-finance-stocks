@@ -1,0 +1,37 @@
+# The morning refresh, in the cloud. Copy this file into your BOARD repo at
+# .github/workflows/refresh-finance.yml, then add your Finnhub key once:
+# repo Settings -> Secrets and variables -> Actions -> New repository secret
+#   Name: FINNHUB_API_KEY   Value: your key from finnhub.io
+#
+# From then on GitHub runs the facts half every morning with your laptop
+# closed: fresh prices + raw headlines land in tiles/data/finance.json, the
+# push wakes Vercel, and your live board updates itself. The judgement half
+# (THE FILTER LAW) still runs through your mentor - say "refresh my stocks"
+# and it reads and rates what accumulated. Fully-cloud judgement is the
+# scheduled-AI episode.
+name: refresh-finance
+on:
+  schedule:
+    - cron: '0 6 * * *'   # 06:00 UTC, every day
+  workflow_dispatch: {}    # and a Run-workflow button for whenever you want
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: fetch the facts
+        run: node automation/refresh-finance.mjs
+        env:
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+      - name: commit what landed
+        run: |
+          git config user.name "the-routine"
+          git config user.email "routine@users.noreply.github.com"
+          git add tiles/data/finance.json
+          git diff --cached --quiet || git commit -m "routine: morning refresh"
+          git push

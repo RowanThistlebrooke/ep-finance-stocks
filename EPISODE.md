@@ -83,6 +83,25 @@ Offer once: they can ask you to "refresh my stocks" any time - that runs step
 tasks, schedule it. If not, say plainly it runs when they ask. Never promise a
 schedule you cannot keep.
 
+## 6. The cloud (optional) - every morning, laptop closed
+
+GitHub can run the facts half daily. Copy `cloud/refresh-finance.yml` from
+this repo into their board repo at `.github/workflows/refresh-finance.yml`,
+then walk them through the ONE browser step, exact clicks:
+
+their board repo on github.com - Settings - Secrets and variables - Actions -
+New repository secret - Name: `FINNHUB_API_KEY` - Value: their key - Add secret.
+
+Push the workflow. From tomorrow, 06:00 UTC: fresh prices and raw headlines
+land in the feed, the push wakes Vercel, the live board updates itself. Crypto
+prices ride along keyless (CoinGecko) once `cryptoHoldings` exist in the feed.
+
+BE HONEST about the split: the cloud runs the FACTS. The judgement (THE FILTER
+LAW - rating, why lines, pick, health) still happens through you when they say
+"refresh my stocks" - it reads whatever accumulated. Fully-cloud judgement is
+the scheduled-AI episode, later. Subscriptions have no wire at all yet: their
+source is Gmail, which is its own episode.
+
 ---
 
 Sealed stays sealed: the tile never fetches and never sees the key. Facts come

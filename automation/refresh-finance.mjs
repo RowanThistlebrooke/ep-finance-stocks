@@ -94,8 +94,59 @@ for (const h of holdings) {
 
 feed.quotes = quotes
 feed.news = news // the mentor rewrites signals + why after reading, then pushes
+
+// ── Crypto. Held coins live in feed.cryptoHoldings: [{ coin:'bitcoin',
+//    symbol:'BTC', qty }]. Prices come from CoinGecko, keyless. Coin news
+//    comes from Finnhub's crypto wire, cut mechanically to headlines that
+//    actually name a held coin - the mentor judges the survivors, same law.
+//    No holdings, no calls: the crypto episode simply hasn't started yet.
+const cryptoHoldings = Array.isArray(feed.cryptoHoldings) ? feed.cryptoHoldings : []
+if (cryptoHoldings.length) {
+  const ids = cryptoHoldings.map(h => String(h.coin || '').toLowerCase()).filter(Boolean)
+  try {
+    const r = await fetch(
+      'https://api.coingecko.com/api/v3/simple/price?ids=' + encodeURIComponent(ids.join(',')) +
+      '&vs_currencies=chf&include_24hr_change=true'
+    )
+    if (r.ok) {
+      const data = await r.json()
+      const cq = {}
+      for (const id of ids) {
+        const row = data[id]
+        if (row && isFinite(row.chf)) {
+          cq[id] = { priceCHF: row.chf, changePct: isFinite(row.chf_24h_change) ? row.chf_24h_change : null }
+        }
+      }
+      feed.cryptoQuotes = cq
+    }
+  } catch { console.warn('  coingecko unreachable; crypto prices keep their last values') }
+
+  const wire = await get('https://finnhub.io/api/v1/news?category=crypto')
+  const cryptoNews = []
+  for (const n of (Array.isArray(wire) ? wire : [])) {
+    if (!n || !n.headline) continue
+    const hl = String(n.headline).toLowerCase()
+    const hit = cryptoHoldings.find(h =>
+      hl.includes(String(h.symbol || '').toLowerCase()) || hl.includes(String(h.coin || '').toLowerCase()))
+    if (!hit) continue // general crypto chatter is not YOUR coin's news
+    cryptoNews.push({
+      symbol: String(hit.symbol || hit.coin).toUpperCase(),
+      signal: 'watch',
+      headline: String(n.headline),
+      why: 'From ' + (n.source || 'the wire') + '. Unread - ask your mentor to read and rate it.',
+    })
+    if (cryptoNews.length >= 3) break
+  }
+  feed.cryptoNews = cryptoNews
+}
+
+// Subscriptions have no wire to fetch: their data source is Gmail receipts,
+// which is its own episode. This script stays honest and touches nothing.
+
 feed.updated = new Date().toISOString()
 
 writeFileSync(FEED_PATH, JSON.stringify(feed, null, 2) + '\n')
-console.log('Wrote ' + FEED_PATH + ': ' + Object.keys(quotes).length + ' quotes, ' + news.length + ' headlines.')
-console.log('Next: the mentor reads and rates the headlines, then commits and pushes.')
+console.log('Wrote ' + FEED_PATH + ': ' + Object.keys(quotes).length + ' stock quotes, ' + news.length + ' headlines'
+  + (cryptoHoldings.length ? ', ' + Object.keys(feed.cryptoQuotes || {}).length + ' coin prices, ' + (feed.cryptoNews || []).length + ' coin headlines' : '')
+  + '.')
+console.log('Next: the mentor reads and rates what landed, then commits and pushes.')
