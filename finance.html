@@ -1200,13 +1200,12 @@ html.posterMode{background:transparent !important}
 
     <div class="tabView" id="tabView"></div>
 
-    <!-- <TabBar active="stocks" tabs={MOUNTED_TABS} /> — MOUNTED_TABS = ['subs','stocks'] -->
-    <nav class="tabBar" aria-label="Finance sections">
-      <div class="tabBarInner">
-        <button type="button" class="tab" aria-pressed="false">subscriptions</button>
-        <button type="button" class="tab active" aria-pressed="true">stocks</button>
-      </div>
-    </nav>
+    <!-- The tab bar returns when this tile has a second working tab. Each
+         episode ships the tile as of that episode: install = replace this one
+         file; data survives because the vault slot is keyed by the tile id,
+         never the file. A tab that renders but does nothing is a broken
+         promise, so the stocks-only version shows no bar at all. -->
+
   </div>
 </main>
 
