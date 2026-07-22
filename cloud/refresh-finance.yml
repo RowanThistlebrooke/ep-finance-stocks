@@ -30,8 +30,10 @@ jobs:
           FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
       - name: commit what landed
         run: |
-          git config user.name "the-routine"
-          git config user.email "routine@users.noreply.github.com"
+          # author as the repo owner: Vercel's free plan only auto-deploys
+          # private-repo commits from the owner, so a bot author blocks the deploy
+          git config user.name "${{ github.repository_owner }}"
+          git config user.email "${{ github.repository_owner }}@users.noreply.github.com"
           git add tiles/data/finance.json
           git diff --cached --quiet || git commit -m "routine: morning refresh"
           git push
